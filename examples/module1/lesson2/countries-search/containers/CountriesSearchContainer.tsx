@@ -32,7 +32,7 @@ const CountriesSearchContainer = () => {
   }, []);
 
   return (
-    <main className="container w-full h-screen p-4 mx-auto">
+    <main className="container w-full min-h-screen p-4 mx-auto">
       <h1 className="w-full text-2xl/10 text-black font-normal text-center">
         Country Search
       </h1>
