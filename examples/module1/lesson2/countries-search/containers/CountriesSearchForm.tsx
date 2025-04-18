@@ -5,20 +5,33 @@ import {
   fetchAllCountriesByLanguage,
   fetchAllCountriesByName,
 } from '../api/countries.api';
+import type { ICountry } from '../types/Countries';
 
-const CountriesSearchForm = () => {
+interface CountriesSearchFormProps {
+  onSearchResults: (results: ICountry[]) => void;
+}
+
+const CountriesSearchForm = ({ onSearchResults }: CountriesSearchFormProps) => {
   const [name, setName] = useState<string | null>(null);
   const [currency, setCurrency] = useState<string | null>(null);
   const [language, setLanguage] = useState<string | null>(null);
   const [capital, setCapital] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (name) fetchAllCountriesByName(name);
-    if (currency) fetchAllCountriesByCurrency(currency);
-    if (language) fetchAllCountriesByLanguage(language);
-    if (capital) fetchAllCountriesByCapital(capital);
+    try {
+      let results: ICountry[] = [];
+
+      if (name) results = await fetchAllCountriesByName(name);
+      if (currency) results = await fetchAllCountriesByCurrency(currency);
+      if (language) results = await fetchAllCountriesByLanguage(language);
+      if (capital) results = await fetchAllCountriesByCapital(capital);
+
+      onSearchResults(results);
+    } catch (error) {
+      console.error('Error fetching countries:', error);
+    }
   };
 
   return (
