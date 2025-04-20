@@ -40,7 +40,7 @@ export async function fetchAllCountriesByLanguage(
   language: string
 ): Promise<ICountry[]> {
   const response = await fetch(
-    `https://restcountries.com/v3.1/language/${language}`
+    `https://restcountries.com/v3.1/lang/${language}`
   );
 
   handleError(response);
