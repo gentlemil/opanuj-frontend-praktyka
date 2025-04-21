@@ -9,9 +9,13 @@ import type { ICountry } from '../types/Countries';
 
 interface CountriesSearchFormProps {
   onSearchResults: (results: ICountry[]) => void;
+  onsSortResults: (type: 'asc' | 'desc') => void;
 }
 
-const CountriesSearchForm = ({ onSearchResults }: CountriesSearchFormProps) => {
+const CountriesSearchForm = ({
+  onSearchResults,
+  onsSortResults,
+}: CountriesSearchFormProps) => {
   const [name, setName] = useState<string | null>(null);
   const [currency, setCurrency] = useState<string | null>(null);
   const [language, setLanguage] = useState<string | null>(null);
@@ -48,10 +52,11 @@ const CountriesSearchForm = ({ onSearchResults }: CountriesSearchFormProps) => {
           type="text"
           value={name || ''}
           onChange={(e) => setName(e.target.value)}
+          placeholder="Search by country's name..."
           className="border border gray-300 rounded-md p-2 bg-white w-full"
         />
       </div>
-
+      <p>Filter By:</p>
       <div className="flex justify-start items-center gap-2">
         <label htmlFor="currency" className="text-base font-medium">
           Currency:
@@ -89,6 +94,23 @@ const CountriesSearchForm = ({ onSearchResults }: CountriesSearchFormProps) => {
           onChange={(e) => setCapital(e.target.value)}
           className="border border gray-300 rounded-md p-2 bg-white w-full"
         />
+      </div>
+
+      <div className="flex justify-start items-center gap-2">
+        <label htmlFor="sortOrder" className="text-base font-medium">
+          Sort by:
+        </label>
+        <select
+          id="sortOrder"
+          onChange={(e) => {
+            const sortOrder = e.target.value;
+            onsSortResults(sortOrder === 'asc' ? 'asc' : 'desc');
+          }}
+          className="border border-gray-300 rounded-md p-2 bg-white w-full"
+        >
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
       </div>
 
       <div className="md:col-span-2">

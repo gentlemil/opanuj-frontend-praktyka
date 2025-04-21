@@ -1,10 +1,3 @@
-// Zaimplementuj funkcjonalność wyszukiwania po nazwie kraju
-// Dodaj możliwość filtrowania po nazwie, walucie, języku oraz stolicy
-// Wyświetl karty krajów zawierające:
-
-// defaultowo pobieram wszystkie kraje i mapuje je po polach, ktore mnie interesuja
-// wyszukiwarka uderza pod inny endpoint
-
 import { useEffect, useState } from 'react';
 import CountriesSearchForm from './CountriesSearchForm';
 import CountriesSearchList from './CountriesSearchList';
@@ -31,6 +24,17 @@ const CountriesSearchContainer = () => {
     fetchCountries();
   }, []);
 
+  const handleSortResults = (type: 'asc' | 'desc') => {
+    const sortedCountries = [...countries].sort((a, b) => {
+      if (type === 'asc') {
+        return a.name.common.localeCompare(b.name.common);
+      } else {
+        return b.name.common.localeCompare(a.name.common);
+      }
+    });
+    setCountries(sortedCountries);
+  };
+
   const handleSearchResults = (results: ICountry[]) => {
     setCountries(results);
   };
@@ -41,7 +45,10 @@ const CountriesSearchContainer = () => {
         Country Search
       </h1>
 
-      <CountriesSearchForm onSearchResults={handleSearchResults} />
+      <CountriesSearchForm
+        onSearchResults={handleSearchResults}
+        onsSortResults={handleSortResults}
+      />
 
       {loading ? (
         <div>
